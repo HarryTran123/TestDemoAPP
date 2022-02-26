@@ -5,6 +5,7 @@
   "main": "src/AppServer.js",
   "scripts": {
     "start": "nodemon --inspect src/AppServer.js",
+    "watch": "node-sass src/resources/scss/app.scss src/public/css/app.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "morgan": "^1.10.0",
+    "node-sass": "^7.0.1",
     "nodemon": "^2.0.15"
   }
 }
