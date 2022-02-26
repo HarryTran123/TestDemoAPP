@@ -2,9 +2,9 @@
   "name": "nodedemoapp",
   "version": "1.0.0",
   "description": "",
-  "main": "AppServer.js",
+  "main": "src/AppServer.js",
   "scripts": {
-    "start": "nodemon --inspect AppServer.js",
+    "start": "nodemon --inspect src/AppServer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,9 +18,11 @@
   },
   "homepage": "https://github.com/Dungdtgcs200419/TestDemoAPP#readme",
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "express-handlebars": "^6.0.2"
   },
   "devDependencies": {
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.15"
   }
 }
