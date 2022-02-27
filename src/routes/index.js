@@ -1,12 +1,12 @@
-const formRouter = require('./form');
 const siteRouter = require('./site');
+const adminRouter = require('./admin');
 
 function route(app){
 
-    app.use('/form', formRouter)
+    
+    app.use('/admin', adminRouter);
 
-
-    app.use('/', siteRouter)
+    app.use('/', siteRouter);
         
 
 }

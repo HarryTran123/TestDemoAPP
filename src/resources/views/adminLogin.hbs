@@ -1,0 +1,19 @@
+<h2 style="text-align: center; padding-top:20px">Admin login panel</h2>
+
+<form action="/admin/check" method="post">
+    <div class="imgcontainer">
+        <img src="https://vi-magento.com/wp-content/uploads/2020/09/ASSET-USER-ADMIN.png" alt="Avatar" class="avatar">
+    </div>
+
+    <div class="container">
+        <label for="username"><b>Username</b></label>
+        <input type="text" placeholder="Enter your username" name="username" required>
+
+        <label for="password"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" required>
+        
+        <label for="password"><b>{{error}}</b></label>
+
+        <button type="submit" name="login" id="login">Login</button>
+    </div>
+</form>
