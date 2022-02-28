@@ -115,7 +115,15 @@ class Admin_Account {
     .then(() => {
       res.redirect('/admin/accounts/admin-Accounts');
     })
-    .catch(next);
+    .catch((error) => {
+      let errorMsg;
+      if (error.code == 11000) {
+        errorMsg = Object.keys(error.keyValue)[0] + ' already exists.';
+      } else {
+        errorMsg = error.message;
+      }
+      res.status(400).send('Bad Request:' + errorMsg);
+    });
   }
 }
 
