@@ -1,0 +1,47 @@
+<main style="padding: 30px;">
+    <div style="text-align: center; margin-bottom:20px; margin-top:20px">
+        <h1>Catalog Management</h1>
+    </div>
+    <div class="row">
+        <div class="col-lg-6" style="margin-top: 20px; margin-bottom:20px">
+            <form action="control.php" method="post">
+                <button type="submit" class="btn btn-primary">Add new category</button>
+            </form>
+        </div>
+        <div class="col-lg-6">
+            <form method="get">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search" id="search" name="search"
+                        style="width: 500px; float:right; margin-top: 10px">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Catalog table -->
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--INSERT CATALOG DATA HERE-->
+            <tr>
+                <td>_ID_</td>
+                <td style="width: 1000px">_Name_</td>
+                <td><a href="control.php?id=2">Edit</a></td>
+                <td><a href="delete.php?id=2" onclick="return confirm_alert(this);">Delete</a></td>
+            </tr>
+            <!--EOF catalog DAta-->
+        </tbody>
+    </table>
+    <!-- End of Catalog Table -->
+    <ul class="pagination" style="justify-content: center;">
+
+        <li class="page-item active"><a class="page-link" href="?page=1">1</a></li>
+    </ul>
+</main>
