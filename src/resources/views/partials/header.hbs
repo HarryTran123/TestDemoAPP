@@ -3,7 +3,7 @@
         <div class="row" style="padding-top: 30px">
             <div class="col-sm-3">
                 <div class="brand-name">
-                    <a href="#"
+                    <a href="/"
                         style="text-decoration: none; color: inherit; font-family:'Times New Roman', Times, serif;">
                         <h2>ATN Toy Store</h2>
                     </a>
@@ -20,17 +20,16 @@
             </div>
             <div class="col-sm-1">
                 <div class="cart" style="padding-top: 10px;">
-                    <a href="#"><button style="all:unset; padding-top:5px;" type="button"
-                            class="btn btn-light"><i class="fas fa-shopping-cart"></i> <span
+                    <a href="#"><button style="all:unset; padding-top:5px;" type="button" class="btn btn-light"><i
+                                class="fas fa-shopping-cart"></i> <span
                                 class="badge badge-light">_#_</span></button></a>
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="dropdown">
                     <button class="btn btn-light dropdown-toggle"
-                        style="all:unset; padding-top:15px; padding-left:50px; cursor: pointer;"
-                        type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
+                        style="all:unset; padding-top:15px; padding-left:50px; cursor: pointer;" type="button"
+                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Hi <strong>usr</strong>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -44,10 +43,11 @@
     <nav class="blend">
         <ul>
             <!-- Show list of category here -->
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Category 1</a></li>
-            <li><a href="#">Category 2</a></li>
-            <li><a href="#">Category 3</a></li>
+            <li><a href="/">Home</a></li>
+            {{#each Object.cataloglist}}
+                <li><a href="/products/{{this.name}}">{{this.name}}</a></li>
+            {{/each}}
+
             <!--EOF show list of category-->
         </ul>
     </nav>

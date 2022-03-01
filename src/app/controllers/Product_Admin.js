@@ -42,6 +42,8 @@ class Product_Admin {
             .catch(next);
     }
 
+
+    // [get] admin/products/:id/delete
     delete(req, res, next) {
         if(typeof req.cookies.username == 'undefined') {
             res.redirect('/admin');
@@ -55,6 +57,7 @@ class Product_Admin {
           .catch(next);
     }
 
+    // [get] admin/products/add
     add(req, res, next) {
         if(typeof req.cookies.username == 'undefined') {
             res.redirect('/admin');
@@ -71,7 +74,7 @@ class Product_Admin {
             .catch(next);
     }
 
-    
+    // [post] admin/products/save
     save(req, res, next) {
         if(typeof req.cookies.username == 'undefined') {
             res.redirect('/admin');
@@ -91,6 +94,7 @@ class Product_Admin {
           .catch(next);
     }
 
+    // [get] admin/products/:id/edit
     edit(req, res, next) {
         if(typeof req.cookies.username == 'undefined') {
             res.redirect('/admin');
@@ -116,6 +120,7 @@ class Product_Admin {
             .catch(next);
     }
 
+    // [post] admin/products/:id/update
     update(req, res, next) {
         if(typeof req.cookies.username == 'undefined') {
             res.redirect('/admin');

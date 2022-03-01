@@ -1,0 +1,48 @@
+<main>
+    <!-- Show Directory ? Home/Category -->
+    <div class="container-fluid" style="margin-top:20px;">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a style="color: inherit;"
+                    href="/products/{{Object.catalog.name}}">{{Object.catalog.name}}</a></li>
+        </ol>
+    </div>
+    <!--EOF Show Directory-->
+
+    <!-- show by CARD -->
+
+    <div class="container">
+        <div class="row">
+            <!-- Insert Here -->
+            {{#each Object.products}}
+                <div class="col-md-3" style="margin-top: 20px;">
+                    <div class="card" style="width: 16rem;">
+                        <a style="margin:auto; margin-top:5px" href="/product/{{this.slug}}"><img
+                                class="card-img-top" style="width:100%; height:300px; object-fit:contain;"
+                                src="{{this.image_link}}" alt="Card image cap"></a>
+                        <div class="card-body">
+                            <a style="color: inherit;" href="#">
+                                <p class="card-text">{{this.productname}}</p>
+                                <a style="color: inherit;" href="#">
+                                    <h5>{{this.price}} $</h5>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+            <!--EOF Insert -->
+        </div>
+    </div>
+
+    <!-- END OF SHOW BY CARD -->
+
+    <!-- PAGINATION -->
+
+    {{!-- <ul class="pagination" style="justify-content: center; margin-top: 50px;">
+
+        <li class="page-item active"><a class="page-link" href="?category=2&page=1">1</a></li>
+        <li class="page-item"><a class="page-link" href="?category=2&page=2">2</a></li>
+        <li class="page-item"><a class="page-link" href="?category=2&page=2">Next</a></li>
+
+    </ul> --}}
+
+</main>
