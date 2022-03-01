@@ -75,6 +75,9 @@ class AdminLoginPanel {
 
     //[get] /account/change-password
     changpassword(req, res, next) {
+        if(typeof req.cookies.username == 'undefined') {
+            res.redirect('/admin');
+          };
         if(typeof req.query.return == 'undefined'){
             res.render('adminChangePassword', {
                 layout: 'admin',
@@ -129,6 +132,9 @@ class AdminLoginPanel {
 
     //[post] /account/change-password/update
     updatepassword(req, res, next) {
+        if(typeof req.cookies.username == 'undefined') {
+            res.redirect('/admin');
+          };
         Admin_accounts.findOne({
             username: req.cookies.username
         })

@@ -7,6 +7,9 @@ const cookieParser = require("cookie-parser");
 class Catalog {
   //[get] /admin/catalog
   show(req, res, next) {
+    if(typeof req.cookies.username == 'undefined') {
+      res.redirect('/admin');
+    };
     Catalogs.find({})
       .then(Catalogs => {
         res.render('product/catalog/catalog', {
@@ -21,6 +24,9 @@ class Catalog {
 
   //[get] admin/catalog/:id/delete
   delete(req, res, next) {
+    if(typeof req.cookies.username == 'undefined') {
+      res.redirect('/admin');
+    };
     Catalogs.deleteOne({
       _id: req.params.id
     })
@@ -32,6 +38,9 @@ class Catalog {
 
   //[get] admin/catalog/add
   add(req, res, next) {
+    if(typeof req.cookies.username == 'undefined') {
+      res.redirect('/admin');
+    };
     res.render('product/catalog/add', {
       layout: 'admin',
       title: 'Add new catalog',
@@ -41,6 +50,9 @@ class Catalog {
 
   //[post] /admin/catalogs/save
   save(req, res, next) {
+    if(typeof req.cookies.username == 'undefined') {
+      res.redirect('/admin');
+    };
     const formData = req.body;
     const Catalog = new Catalogs(formData);
     Catalog.save()
@@ -60,6 +72,9 @@ class Catalog {
 
   //[get] /admin/catalogs/:id/edit
   edit(req, res, next) {
+    if(typeof req.cookies.username == 'undefined') {
+      res.redirect('/admin');
+    };
     Catalogs.findById(req.params.id)
       .then(catalog => {
         res.render('product/catalog/edit', {
@@ -74,6 +89,9 @@ class Catalog {
 
   //[post] /admin/catalogs/:id/update
   update(req, res, next) {
+    if(typeof req.cookies.username == 'undefined') {
+      res.redirect('/admin');
+    };
     Catalogs.updateOne(
       {
         _id: req.params.id

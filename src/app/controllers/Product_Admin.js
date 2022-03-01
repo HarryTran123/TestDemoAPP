@@ -8,6 +8,9 @@ class Product_Admin {
 
     // [get] /admin/products
     show(req, res, next) {
+        if(typeof req.cookies.username == 'undefined') {
+            res.redirect('/admin');
+          };
         Catalogs.find({})
             .then(Catalogs => {
                 Catalogs = multipleMongooseToObject(Catalogs);

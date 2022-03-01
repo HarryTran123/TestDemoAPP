@@ -11,7 +11,7 @@ class Admin_Account {
   admin(req, res, next) {
     if(typeof req.cookies.username == 'undefined') {
       res.redirect('/admin');
-    }
+    };
     Admin_accounts.find({})
       .then(Admin_accounts => {
         Admin_accounts = multipleMongooseToObject (Admin_accounts);
@@ -39,7 +39,7 @@ class Admin_Account {
   add(req, res, next) {
     if(typeof req.cookies.username == 'undefined') {
       res.redirect('/admin');
-    }
+    };
     res.render('accounts/add', { 
       layout: 'admin',
       title: "Add new admin account",
@@ -56,7 +56,9 @@ class Admin_Account {
   //[post] /admin/accounts/save
   save(req, res, next) {
     // res.json(req.body);
-
+    if(typeof req.cookies.username == 'undefined') {
+      res.redirect('/admin');
+    };
     //Save object to Database
     const formData = req.body;
     formData.password = md5.MD5(formData.password);
@@ -78,6 +80,9 @@ class Admin_Account {
 
   //[get] /admin/:id/delete
   delete(req, res, next) {
+    if(typeof req.cookies.username == 'undefined') {
+      res.redirect('/admin');
+    };
     Admin_accounts.deleteOne({
       _id: req.params.id
     })
@@ -89,6 +94,9 @@ class Admin_Account {
 
   //[get] /admin/:id/edit
   edit(req, res, next) {
+    if(typeof req.cookies.username == 'undefined') {
+      res.redirect('/admin');
+    };
     Admin_accounts.findById(req.params.id)
       .then(account => {
         res.render('accounts/edit' , {
@@ -103,6 +111,9 @@ class Admin_Account {
 
   //[post] /admin/:id/update
   update(req, res, next) {
+    if(typeof req.cookies.username == 'undefined') {
+      res.redirect('/admin');
+    };
     Admin_accounts.updateOne(
       {
         _id: req.params.id

@@ -9,6 +9,9 @@ const { redirect } = require("express/lib/response");
 class User_Account {
   
   user(req, res, next) {
+    if(typeof req.cookies.username == 'undefined') {
+      res.redirect('/admin');
+    };
     User_accounts.find({})
     .then(User_accounts =>{
       res.render('accounts/user_account', {
