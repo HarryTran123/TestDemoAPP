@@ -10,7 +10,9 @@ const route = require('./routes');
 const db = require('./config/db');
 
 const app = express();
-const port = 3000;
+
+const hostname = 'localhost';
+const port = process.env.PORT || 3000;
 
 
 
@@ -53,5 +55,5 @@ route(app)
 
 
 app.listen(port, () => {
-    console.log(`App created on link: http://localhost:${port}`);
+    console.log(`App created on link: http://${hostname}:${process.env.port | port}`);
 })
