@@ -1,5 +1,7 @@
 const Product = require('../models/Product');
 const Catalogs = require('../models/Catalog');
+const User_accounts = require("../models/User_account");
+
 const { multipleMongooseToObject, moongoseToObject } = require("../../utility/mongoose");
 const md5 = require('../../utility/md5');
 const cookieParser = require("cookie-parser");
@@ -9,6 +11,7 @@ class SiteController {
     //[get] /
     home(req, res, next) {
         //Find Products in Database
+        
         Catalogs.find({})
             .then(catalogs => {
                 let cataloglist = multipleMongooseToObject(catalogs);
@@ -108,6 +111,16 @@ class SiteController {
                     .catch(next);
             })
             .catch(next);
+    }
+
+    signup(req, res, next) {
+        console.log('signup');
+        res.redirect(req.get('referer'));
+    }
+
+    check(req, res, next) {
+        console.log('check');
+        res.redirect(req.get('referer'));
     }
 
 }

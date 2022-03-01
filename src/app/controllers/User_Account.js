@@ -2,16 +2,14 @@ const User_accounts = require("../models/User_account");
 const { multipleMongooseToObject, moongoseToObject } = require("../../utility/mongoose");
 const md5 = require('../../utility/md5');
 const cookieParser = require("cookie-parser");
-const res = require("express/lib/response");
-const { redirect } = require("express/lib/response");
 
 
 class User_Account {
   
   user(req, res, next) {
-    if(typeof req.cookies.username == 'undefined') {
-      res.redirect('/admin');
-    };
+      if(typeof req.cookies.username == 'undefined') {
+        res.redirect('/admin');
+      };
     User_accounts.find({})
     .then(User_accounts =>{
       res.render('accounts/user_account', {
