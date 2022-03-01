@@ -4,7 +4,9 @@ const router = express.Router();
 const admin_account = require('../app/controllers/Admin_Account');
 const user_account = require('../app/controllers/User_Account');
 const adminLoginPanel = require('../app/controllers/AdminLoginPanel');
-const catalog = require('../app/controllers/Catalog');
+const catalog = require('../app/controllers/Catalog_Admin');
+const product = require('../app/controllers/Product_Admin');
+
 
 
 //admin accounts [get]
@@ -32,6 +34,10 @@ router.get('/catalogs/:id/edit', catalog.edit)
 router.post('/catalogs/save', catalog.save);
 router.post('/catalogs/:id/update', catalog.update);
 
+//product [get]
+router.get('/products', product.show);
+router.get('/products/:id/delete', product.delete)
+//product [post]
 
 
 router.get('/', adminLoginPanel.login);
