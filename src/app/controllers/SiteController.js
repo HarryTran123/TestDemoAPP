@@ -62,11 +62,12 @@ class SiteController {
                         })
                         .then(products => {
                             res.render('products', {
+                                title: catalog.name,
                                 Object: {
                                     cataloglist,
                                     products: multipleMongooseToObject(products),
                                     catalog,
-                                }
+                                },
                             });
                         })
                         .catch(next);
@@ -93,11 +94,12 @@ class SiteController {
                         .then(catalog => {
                             catalog = moongoseToObject(catalog);
                             res.render('productdetail', {
+                                title: product.productname,
                                 Object: {
                                     cataloglist,
                                     product,
                                     catalog,
-                                }
+                                },
                             });
                         })
                         .catch(next);
