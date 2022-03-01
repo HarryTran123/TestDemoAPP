@@ -2,8 +2,7 @@ const Admin_accounts = require("../models/Admin_account");
 const { multipleMongooseToObject, moongoseToObject } = require("../../utility/mongoose");
 const md5 = require('../../utility/md5');
 const cookieParser = require("cookie-parser");
-const res = require("express/lib/response");
-const { redirect } = require("express/lib/response");
+
 
 
 class Admin_Account {

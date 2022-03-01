@@ -36,10 +36,15 @@ router.post('/catalogs/:id/update', catalog.update);
 
 //product [get]
 router.get('/products', product.show);
-router.get('/products/:id/delete', product.delete)
+router.get('/products/add', product.add);
+router.get('/products/:id/delete', product.delete);
+router.get('/products/:id/edit', product.edit);
+
 //product [post]
+router.post('/products/save', product.save);
+router.post('/products/:id/update', product.update)
 
-
+//Loginpanel [get]
 router.get('/', adminLoginPanel.login);
 
 

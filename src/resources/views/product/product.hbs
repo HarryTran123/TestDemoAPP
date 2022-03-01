@@ -4,7 +4,7 @@
     </div>
     <div class="row">
         <div class="col-lg-6" style="margin-top: 20px; margin-bottom:20px">
-            <form action="control.php" method="post">
+            <form action="/admin/products/add" method="get">
                 <button type="submit" class="btn btn-primary">Add new product</button>
             </form>
         </div>
@@ -37,15 +37,15 @@
             {{#each products}}
             <tr>
                 <td>{{sum @index 1}}</td>
-                <td><img src="{{this.image_link}}" alt="Product image here" style="width: 20%;"></td>
+                <td><img src="{{this.image_link}}" alt="Product image here" style="width: 20%; height: 20%"></td>
                 <td>{{this.productname}}</td>
                 <td>{{this.price}}</td>
-                <td>{{this.category_id}}</td>
+                <td>{{this.catalogid}}</td>
                 <td>
-                    {{this.content}}
+                    {{{this.content}}}
                 </td>
                 <td>{{this.view}}</td>
-                <td><a href="#">Edit</a></td>
+                <td><a href="/admin/products/{{this._id}}/edit">Edit</a></td>
                 <td><a href="/admin/products/{{this._id}}/delete" onclick="return confirm_alert(this);">Delete</a></td>
             </tr>
             {{/each}}

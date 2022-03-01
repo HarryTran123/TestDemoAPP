@@ -1,9 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
 const handlebars = require('express-handlebars');
+const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const {google} = require('googleapis');
+
 
 const route = require('./routes');
 const db = require('./config/db');
@@ -20,10 +21,15 @@ app.use(express.static(path.join(__dirname, "public")));
 db.connect();
 
 //Middleware
-app.use(express.urlencoded({
-    extended: true
+app.use(bodyParser.json({
+    limit:1024*1024*10,
+    type:'application/json'
+}))
+app.use(bodyParser.urlencoded({
+    extended:true,
+    limit:1024*1024*10,
+    type:'application/x-www-form-urlencoded' 
 }));
-app.use(express.json());
 
 //Usign cookies
 app.use(cookieParser());
