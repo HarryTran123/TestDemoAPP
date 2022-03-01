@@ -29,7 +29,8 @@ class SiteController {
                                                 top2_3Views,
                                                 top3_8Views,
                                                 cataloglist,
-                                            }
+                                            },
+                                            WebUser: 'Dung',
                                         });  
                                     })
                                     .catch(next);
