@@ -7,6 +7,8 @@ const siteController = require('../app/controllers/SiteController');
 router.get('/about', siteController.about);
 router.get('/products/:catalog_name', siteController.catalog);
 router.get('/product/:slug', siteController.product);
+router.get('/logout', siteController.logout)
+
 
 
 //site [post]

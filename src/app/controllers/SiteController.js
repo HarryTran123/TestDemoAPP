@@ -33,7 +33,7 @@ class SiteController {
                                                 top3_8Views,
                                                 cataloglist,
                                             },
-                                            WebUser: 'Dung',
+                                            WebUser: req.cookies.WebUser,
                                         });  
                                     })
                                     .catch(next);
@@ -72,6 +72,7 @@ class SiteController {
                                     products: multipleMongooseToObject(products),
                                     catalog,
                                 },
+                                WebUser: req.cookies.WebUser,
                             });
                         })
                         .catch(next);
@@ -104,6 +105,7 @@ class SiteController {
                                     product,
                                     catalog,
                                 },
+                                WebUser: req.cookies.WebUser,
                             });
                         })
                         .catch(next);
@@ -113,14 +115,42 @@ class SiteController {
             .catch(next);
     }
 
+    // [post] /signup
     signup(req, res, next) {
-        console.log('signup');
-        res.redirect(req.get('referer'));
+        
     }
 
+    // [post] /check
     check(req, res, next) {
-        console.log('check');
+        const inputuser = req.body.user;
+        const inputpassword = md5.MD5(req.body.password);
+
+        User_accounts.findOne({
+            $and: [{
+                $or: [{username: inputuser}, {email: inputuser}],
+                password: inputpassword
+            }]
+        })
+            .then(user => {
+                const outuser = moongoseToObject(user);
+
+                res.cookie('WebUser', outuser.name);
+                res.cookie('WebUserEmail', outuser.email);
+                res.cookie('WebUserPassword', outuser.password);
+
+                    
+                res.redirect(req.get('referer'));
+            })
+            .catch(next);
+    }
+
+    // [get] /logout
+    logout(req, res, next) {
+        res.clearCookie("WebUser");
+        res.clearCookie("WebUserEmail");
+        res.clearCookie("WebUserPassword");
         res.redirect(req.get('referer'));
+
     }
 
 }
