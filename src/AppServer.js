@@ -54,6 +54,5 @@ app.set('views', path.join(__dirname, 'resources', 'views'));
 route(app)
 
 
-app.listen(port, () => {
-    console.log(`App created on link: http://${hostname}:${process.env.port | port}`);
-})
+app.listen(process.env.port | port);
+console.log(`App created on link: http://${hostname}:${process.env.port | port}`);
