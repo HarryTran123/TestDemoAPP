@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/AppServer.js",
+  "engines": {
+    "node": "16.13.1",
+    "npm": "8.1.2"
+  },
   "scripts": {
     "start": "nodemon --inspect src/AppServer.js",
     "watch": "node-sass --watch src/resources/scss/ --output src/public/css/",
