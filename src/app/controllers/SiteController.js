@@ -225,6 +225,8 @@ class SiteController {
         res.clearCookie("WebUserEmail");
         res.clearCookie("WebUserPassword");
         res.redirect(req.get('referer'));
+        req.session.destroy();
+        res.redirect(req.get('referer'));
 
     }
 
