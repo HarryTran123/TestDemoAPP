@@ -11,8 +11,8 @@
             </div>
             <div class="col-sm-6">
                 <div class="search-box" style="padding-top: 5px;">
-                    <form action="#" method="post">
-                        <input type="text" name="search" id="search" style="width: 400px; margin-left:70px">
+                    <form action="/search" method="get">
+                        <input type="text" name="productname" id="productname" style="width: 400px; margin-left:70px">
                         <button style="all: unset; cursor: pointer;" type="submit"><i
                                 class="fas fa-search"></i></button>
                     </form>
@@ -22,7 +22,7 @@
                 <div class="cart" style="padding-top: 10px;">
                     <a href="#"><button style="all:unset; padding-top:5px;" type="button" class="btn btn-light"><i
                                 class="fas fa-shopping-cart"></i> <span
-                                class="badge badge-light">_#_</span></button></a>
+                                class="badge badge-light">{{cart}}</span></button></a>
                 </div>
             </div>
             <div class="col-sm-2">
