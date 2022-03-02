@@ -4,10 +4,8 @@ const User_accounts = require('../models/User_account');
 
 const { multipleMongooseToObject, moongoseToObject } = require("../../utility/mongoose");
 const md5 = require('../../utility/md5');
+const session = require('express-session')
 const cookieParser = require("cookie-parser");
-const { json } = require('express/lib/response');
-const { JSONCookie } = require('cookie-parser');
-var storage = require('node-persist');
 
 
 
@@ -16,18 +14,16 @@ class SiteController {
    
 
     //[get] /
-    async home(req, res, next) {
-        //Find Products in Database
-        await storage.init()
-
-        if (typeof await storage.getItem('cart') == 'undefined') {
-            await storage.setItem('cart', {
+    home(req, res, next) {
+        if (typeof req.session.cart == 'undefined') {
+            req.session.cart = {
                 count: 0,
                 products: []
-            });
+            }
             res.redirect(req.originalUrl)
         }else {
-            let cart = await storage.getItem('cart');
+            let cart = req.session.cart;
+             //Find Products in Database
             Catalogs.find({})
             .then(catalogs => {
                 let cataloglist = multipleMongooseToObject(catalogs);
@@ -71,16 +67,15 @@ class SiteController {
     }
 
     //[get] /products/:catalog_name
-    async catalog(req, res, next) {
-        await storage.init();
-        if (typeof await storage.getItem('cart') == 'undefined') {
-            await storage.setItem('cart', {
+    catalog(req, res, next) {
+        if (typeof req.session.cart == 'undefined') {
+            req.session.cart = {
                 count: 0,
                 products: []
-            });
-            res.redirect(req.originalUrl);
+            }
+            res.redirect(req.originalUrl)
         }else {
-            let cart = await storage.getItem('cart');
+            let cart = req.session.cart;
             Catalogs.find({})
             .then(catalogs => {
                 let cataloglist = multipleMongooseToObject(catalogs);
@@ -115,16 +110,15 @@ class SiteController {
     }
 
     //[get] /product/:slug
-    async product(req, res, next) {
-        await storage.init();
-        if (typeof await storage.getItem('cart') == 'undefined') {
-            await storage.setItem('cart', {
+    product(req, res, next) {
+        if (typeof req.session.cart == 'undefined') {
+            req.session.cart = {
                 count: 0,
                 products: []
-            });
-            res.redirect(req.originalUrl);
+            }
+            res.redirect(req.originalUrl)
         }else {
-            let cart = await storage.getItem('cart');
+            let cart = req.session.cart;
 
             Catalogs.find({})
             .then(catalogs => {
@@ -160,16 +154,15 @@ class SiteController {
     }
 
     // [post] /signup
-    async signup(req, res, next) {
-        await storage.init();
-        if (typeof await storage.getItem('cart') == 'undefined') {
-            await storage.setItem('cart', {
+    signup(req, res, next) {
+        if (typeof req.session.cart == 'undefined') {
+            req.session.cart = {
                 count: 0,
                 products: []
-            });
-            res.redirect(req.originalUrl);
+            }
+            res.redirect(req.originalUrl)
         }else {
-            let cart = await storage.getItem('cart');
+            let cart = req.session.cart;
             //Save object to Database
             const formData = req.body;
             formData.password = md5.MD5(formData.password);
@@ -193,16 +186,15 @@ class SiteController {
     }
 
     // [post] /check
-    async check(req, res, next) {
-        await storage.init();
-        if (typeof await storage.getItem('cart') == 'undefined') {
-            await storage.setItem('cart', {
+    check(req, res, next) {
+        if (typeof req.session.cart == 'undefined') {
+            req.session.cart = {
                 count: 0,
                 products: []
-            });
-            res.redirect(req.originalUrl);
+            }
+            res.redirect(req.originalUrl)
         }else {
-            let cart = await storage.getItem('cart');
+            let cart = req.session.cart;
             const inputuser = req.body.user;
             const inputpassword = md5.MD5(req.body.password);
 
@@ -237,16 +229,15 @@ class SiteController {
     }
 
     //[get] /search/
-    async search(req, res, next) {
-        await storage.init();
-        if (typeof await storage.getItem('cart') == 'undefined') {
-            await storage.setItem('cart', {
+    search(req, res, next) {
+        if (typeof req.session.cart == 'undefined') {
+            req.session.cart = {
                 count: 0,
                 products: []
-            });
-            res.redirect(req.originalUrl);
+            }
+            res.redirect(req.originalUrl)
         }else {
-            let cart = await storage.getItem('cart');
+            let cart = req.session.cart;
             Catalogs.find({})
             .then(catalogs => {
                 let cataloglist = multipleMongooseToObject(catalogs);
@@ -270,17 +261,16 @@ class SiteController {
     }
 
     // [post] /product/:slug
-    async addtocart(req, res, next) {
+    addtocart(req, res, next) {
         Product.findOne({
             slug: req.params.slug
         })
-            .then(async product =>  {
-                await storage.init();
-                let cart = await storage.getItem('cart');
+            .then(product =>  {
+                let cart = req.session.cart;
                 cart.products.push(moongoseToObject(product));
                 cart.count = cart.count + 1;
                 
-                await storage.setItem('cart', cart);
+                req.session.cart = cart
 
                 res.redirect(req.get('referer'));                
             })

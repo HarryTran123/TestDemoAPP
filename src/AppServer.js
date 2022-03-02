@@ -3,7 +3,8 @@ const morgan = require('morgan');
 const handlebars = require('express-handlebars');
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
-const storage = require('node-persist');
+const session = require('express-session')
+
 
 const path = require('path');
 
@@ -16,13 +17,6 @@ const app = express();
 const hostname = 'localhost';
 const port = process.env.PORT || 3000;
 
-
-async function ClearData() {
-    await storage.init();
-    await storage.clear();
-}
-
-ClearData();
 
 //Declare static path
 app.use(express.static(path.join(__dirname, "public")));
@@ -40,6 +34,11 @@ app.use(bodyParser.urlencoded({
     limit:1024*1024*10,
     type:'application/x-www-form-urlencoded' 
 }));
+app.use(session({
+    resave: true, 
+    saveUninitialized: true, 
+    secret: 'testNodeApp', 
+    cookie: { maxAge: 60000 }}));
 
 //Usign cookies
 
