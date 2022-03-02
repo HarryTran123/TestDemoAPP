@@ -34,7 +34,9 @@ app.use(bodyParser.urlencoded({
 }));
 
 //Usign cookies
+
 app.use(cookieParser());
+
 
 
 //Use Morgan
