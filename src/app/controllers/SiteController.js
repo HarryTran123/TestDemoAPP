@@ -7,23 +7,28 @@ const md5 = require('../../utility/md5');
 const cookieParser = require("cookie-parser");
 const { json } = require('express/lib/response');
 const { JSONCookie } = require('cookie-parser');
+var storage = require('node-persist');
+
+
 
 class SiteController {
     
    
 
     //[get] /
-    home(req, res, next) {
+    async home(req, res, next) {
         //Find Products in Database
-        
-        if (typeof req.cookies.cart == 'undefined') {
-            res.cookie("cart", JSON.stringify({
+        await storage.init()
+
+        if (typeof await storage.getItem('cart') == 'undefined') {
+            await storage.setItem('cart', {
                 count: 0,
-                products: [],
-            }));
-          }
-        var cart = JSON.parse(req.cookies.cart);
-        Catalogs.find({})
+                products: []
+            });
+            res.redirect(req.originalUrl)
+        }else {
+            let cart = await storage.getItem('cart');
+            Catalogs.find({})
             .then(catalogs => {
                 let cataloglist = multipleMongooseToObject(catalogs);
                 const sortDescendingView = {view: -1};
@@ -43,7 +48,7 @@ class SiteController {
                                                 top2_3Views,
                                                 top3_8Views,
                                                 cataloglist,
-                                                cart: cart.count
+                                                cartnum: cart.count,
                                             },
                                             WebUser: req.cookies.WebUser,
                                         });  
@@ -56,6 +61,8 @@ class SiteController {
                     .catch(next);
             })
             .catch(next);
+        }
+        
     }
 
     //[get] /about
@@ -64,15 +71,17 @@ class SiteController {
     }
 
     //[get] /products/:catalog_name
-    catalog(req, res, next) {
-        if (typeof req.cookies.cart == 'undefined') {
-            res.cookie("cart", JSON.stringify({
+    async catalog(req, res, next) {
+        await storage.init();
+        if (typeof await storage.getItem('cart') == 'undefined') {
+            await storage.setItem('cart', {
                 count: 0,
-                products: [],
-            }));
-          }
-        var cart = JSON.parse(req.cookies.cart);
-        Catalogs.find({})
+                products: []
+            });
+            res.redirect(req.originalUrl);
+        }else {
+            let cart = await storage.getItem('cart');
+            Catalogs.find({})
             .then(catalogs => {
                 let cataloglist = multipleMongooseToObject(catalogs);
                 Catalogs.findOne({
@@ -90,7 +99,7 @@ class SiteController {
                                     cataloglist,
                                     products: multipleMongooseToObject(products),
                                     catalog,
-                                    cart: cart.count
+                                    cartnum: cart.count,
                                 },
                                 WebUser: req.cookies.WebUser,
                             });
@@ -100,19 +109,24 @@ class SiteController {
                     .catch(next);
             })
             .catch(next);
+        }
+        
 
     }
 
     //[get] /product/:slug
-    product(req, res, next) {
-        if (typeof req.cookies.cart == 'undefined') {
-            res.cookie("cart", JSON.stringify({
+    async product(req, res, next) {
+        await storage.init();
+        if (typeof await storage.getItem('cart') == 'undefined') {
+            await storage.setItem('cart', {
                 count: 0,
-                products: [],
-            }));
-          }
-        var cart = JSON.parse(req.cookies.cart);
-        Catalogs.find({})
+                products: []
+            });
+            res.redirect(req.originalUrl);
+        }else {
+            let cart = await storage.getItem('cart');
+
+            Catalogs.find({})
             .then(catalogs => {
                 let cataloglist = multipleMongooseToObject(catalogs);
                 Product.findOne({
@@ -131,7 +145,7 @@ class SiteController {
                                     cataloglist,
                                     product,
                                     catalog,
-                                    cart: cart.count
+                                    cartnum: cart.count,
                                 },
                                 WebUser: req.cookies.WebUser,
                             });
@@ -141,75 +155,80 @@ class SiteController {
                     .catch(next);
             })
             .catch(next);
+        }
+        
     }
 
     // [post] /signup
-    signup(req, res, next) {
-        if (typeof req.cookies.cart == 'undefined') {
-            res.cookie("cart", JSON.stringify({
+    async signup(req, res, next) {
+        await storage.init();
+        if (typeof await storage.getItem('cart') == 'undefined') {
+            await storage.setItem('cart', {
                 count: 0,
-                products: [],
-            }));
-          }
-        var cart = JSON.parse(req.cookies.cart);
-        //Save object to Database
-        const formData = req.body;
-        formData.password = md5.MD5(formData.password);
-        delete formData.SignUp;
-        const User_account = new User_accounts(formData);
-        User_account.save()
-            .then(() => {
-                res.redirect(req.get('referer'));
-            })
-            .catch((error) => {
-            let errorMsg;
-            if (error.code == 11000) {
-                errorMsg = Object.keys(error.keyValue)[0] + ' already exists.';
-            } else {
-                errorMsg = error.message;
-            }
-            res.status(400).send('Bad Request:' + errorMsg);
+                products: []
             });
+            res.redirect(req.originalUrl);
+        }else {
+            let cart = await storage.getItem('cart');
+            //Save object to Database
+            const formData = req.body;
+            formData.password = md5.MD5(formData.password);
+            delete formData.SignUp;
+            const User_account = new User_accounts(formData);
+            User_account.save()
+                .then(() => {
+                    res.redirect(req.get('referer'));
+                })
+                .catch((error) => {
+                let errorMsg;
+                if (error.code == 11000) {
+                    errorMsg = Object.keys(error.keyValue)[0] + ' already exists.';
+                } else {
+                    errorMsg = error.message;
+                }
+                res.status(400).send('Bad Request:' + errorMsg);
+            });
+        }
+        
     }
 
     // [post] /check
-    check(req, res, next) {
-        if (typeof req.cookies.cart == 'undefined') {
-            res.cookie("cart", JSON.stringify({
+    async check(req, res, next) {
+        await storage.init();
+        if (typeof await storage.getItem('cart') == 'undefined') {
+            await storage.setItem('cart', {
                 count: 0,
-                products: [],
-            }));
-          }
-        var cart = JSON.parse(req.cookies.cart);
-        const inputuser = req.body.user;
-        const inputpassword = md5.MD5(req.body.password);
+                products: []
+            });
+            res.redirect(req.originalUrl);
+        }else {
+            let cart = await storage.getItem('cart');
+            const inputuser = req.body.user;
+            const inputpassword = md5.MD5(req.body.password);
 
-        User_accounts.findOne({
-            $and: [{
-                $or: [{username: inputuser}, {email: inputuser}],
-                password: inputpassword
-            }]
-        })
-            .then(user => {
-                const outuser = moongoseToObject(user);
-
-                res.cookie('WebUser', outuser.name);
-                res.cookie('WebUserEmail', outuser.email);
-                res.cookie('WebUserPassword', outuser.password);
-
-                    
-                res.redirect(req.get('referer'));
+            User_accounts.findOne({
+                $and: [{
+                    $or: [{username: inputuser}, {email: inputuser}],
+                    password: inputpassword
+                }]
             })
-            .catch(next);
+                .then(user => {
+                    const outuser = moongoseToObject(user);
+
+                    res.cookie('WebUser', outuser.name);
+                    res.cookie('WebUserEmail', outuser.email);
+                    res.cookie('WebUserPassword', outuser.password);
+
+                        
+                    res.redirect(req.get('referer'));
+                })
+                .catch(next);
+        }
+        
     }
 
     // [get] /logout
     logout(req, res, next) {
-        if (typeof req.cookies.cart !== 'undefined') {
-            res.cookie('cart', {
-                count: 0
-            });
-        };
         res.clearCookie("WebUser");
         res.clearCookie("WebUserEmail");
         res.clearCookie("WebUserPassword");
@@ -218,15 +237,17 @@ class SiteController {
     }
 
     //[get] /search/
-    search(req, res, next) {
-        if (typeof req.cookies.cart == 'undefined') {
-            res.cookie("cart", JSON.stringify({
+    async search(req, res, next) {
+        await storage.init();
+        if (typeof await storage.getItem('cart') == 'undefined') {
+            await storage.setItem('cart', {
                 count: 0,
-                products: [],
-            }));
-          }
-        var cart = JSON.parse(req.cookies.cart);
-        Catalogs.find({})
+                products: []
+            });
+            res.redirect(req.originalUrl);
+        }else {
+            let cart = await storage.getItem('cart');
+            Catalogs.find({})
             .then(catalogs => {
                 let cataloglist = multipleMongooseToObject(catalogs);
                 Product.find({
@@ -237,33 +258,31 @@ class SiteController {
                             Object: {
                                 cataloglist,
                                 products: multipleMongooseToObject(products),
-                                cart: cart.count
+                                cartnum: cart.count,
                             }
                         });
                     })
                     .catch(next);
             })
             .catch(next);
+        }
+        
     }
 
     // [post] /product/:slug
-    addtocart(req, res, next) {
-        if (typeof req.cookies.cart == 'undefined') {
-            res.cookie("cart", JSON.stringify({
-                count: 0,
-                products: [],
-            }));
-          }
-        var cart = JSON.parse(req.cookies.cart);
+    async addtocart(req, res, next) {
         Product.findOne({
             slug: req.params.slug
         })
-            .then(product => {
+            .then(async product =>  {
+                await storage.init();
+                let cart = await storage.getItem('cart');
                 cart.products.push(moongoseToObject(product));
                 cart.count = cart.count + 1;
-                cart = JSON.stringify(cart);
-                req.cookies.cart = cart;
-                res.redirect('/');
+                
+                await storage.setItem('cart', cart);
+
+                res.redirect(req.get('referer'));                
             })
             .catch(next);
     }

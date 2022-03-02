@@ -3,6 +3,8 @@ const morgan = require('morgan');
 const handlebars = require('express-handlebars');
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
+const storage = require('node-persist');
+
 const path = require('path');
 
 
@@ -15,6 +17,12 @@ const hostname = 'localhost';
 const port = process.env.PORT || 3000;
 
 
+async function ClearData() {
+    await storage.init();
+    await storage.clear();
+}
+
+ClearData();
 
 //Declare static path
 app.use(express.static(path.join(__dirname, "public")));
