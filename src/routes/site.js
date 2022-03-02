@@ -7,13 +7,15 @@ const siteController = require('../app/controllers/SiteController');
 router.get('/about', siteController.about);
 router.get('/products/:catalog_name', siteController.catalog);
 router.get('/product/:slug', siteController.product);
-router.get('/logout', siteController.logout)
+router.get('/logout', siteController.logout);
 
 
 
 //site [post]
 router.post('/check', siteController.check);
 router.post('/signup', siteController.signup);
+router.post('/search/:productname', siteController.search);
+
 
 router.get('/', siteController.home);
 

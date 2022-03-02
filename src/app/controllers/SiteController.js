@@ -1,6 +1,6 @@
 const Product = require('../models/Product');
 const Catalogs = require('../models/Catalog');
-const User_accounts = require("../models/User_account");
+const User_accounts = require('../models/User_account');
 
 const { multipleMongooseToObject, moongoseToObject } = require("../../utility/mongoose");
 const md5 = require('../../utility/md5');
@@ -117,7 +117,24 @@ class SiteController {
 
     // [post] /signup
     signup(req, res, next) {
-        
+        //Save object to Database
+        const formData = req.body;
+        formData.password = md5.MD5(formData.password);
+        delete formData.SignUp;
+        const User_account = new User_accounts(formData);
+        User_account.save()
+            .then(() => {
+                res.redirect(req.get('referer'));
+            })
+            .catch((error) => {
+            let errorMsg;
+            if (error.code == 11000) {
+                errorMsg = Object.keys(error.keyValue)[0] + ' already exists.';
+            } else {
+                errorMsg = error.message;
+            }
+            res.status(400).send('Bad Request:' + errorMsg);
+            });
     }
 
     // [post] /check
@@ -153,6 +170,10 @@ class SiteController {
 
     }
 
+    //[post] /search
+    search(req, res, next) {
+
+    }
 }
 
 module.exports = new SiteController;
