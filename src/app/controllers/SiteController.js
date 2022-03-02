@@ -5,6 +5,8 @@ const User_accounts = require('../models/User_account');
 const { multipleMongooseToObject, moongoseToObject } = require("../../utility/mongoose");
 const md5 = require('../../utility/md5');
 const cookieParser = require("cookie-parser");
+const { json } = require('express/lib/response');
+const { JSONCookie } = require('cookie-parser');
 
 class SiteController {
     
@@ -13,14 +15,14 @@ class SiteController {
     //[get] /
     home(req, res, next) {
         //Find Products in Database
-        if (typeof req.cookies.cart !== 'undefined') {
-            res.JSONCookie({
-                cart: {
-                    count:0
-                }
-            })
-        };
-        res.json(req.cookies)
+        
+        if (typeof req.cookies.cart == 'undefined') {
+            res.cookie("cart", JSON.stringify({
+                count: 0,
+                products: [],
+            }));
+          }
+        var cart = JSON.parse(req.cookies.cart);
         Catalogs.find({})
             .then(catalogs => {
                 let cataloglist = multipleMongooseToObject(catalogs);
@@ -41,6 +43,7 @@ class SiteController {
                                                 top2_3Views,
                                                 top3_8Views,
                                                 cataloglist,
+                                                cart: cart.count
                                             },
                                             WebUser: req.cookies.WebUser,
                                         });  
@@ -62,11 +65,13 @@ class SiteController {
 
     //[get] /products/:catalog_name
     catalog(req, res, next) {
-        if (typeof req.cookies.cart !== 'undefined') {
-            res.cookie('cart', {
-                count: 0
-            });
-        };
+        if (typeof req.cookies.cart == 'undefined') {
+            res.cookie("cart", JSON.stringify({
+                count: 0,
+                products: [],
+            }));
+          }
+        var cart = JSON.parse(req.cookies.cart);
         Catalogs.find({})
             .then(catalogs => {
                 let cataloglist = multipleMongooseToObject(catalogs);
@@ -85,6 +90,7 @@ class SiteController {
                                     cataloglist,
                                     products: multipleMongooseToObject(products),
                                     catalog,
+                                    cart: cart.count
                                 },
                                 WebUser: req.cookies.WebUser,
                             });
@@ -99,11 +105,13 @@ class SiteController {
 
     //[get] /product/:slug
     product(req, res, next) {
-        if (typeof req.cookies.cart !== 'undefined') {
-            res.cookie('cart', {
-                count: 0
-            });
-        };
+        if (typeof req.cookies.cart == 'undefined') {
+            res.cookie("cart", JSON.stringify({
+                count: 0,
+                products: [],
+            }));
+          }
+        var cart = JSON.parse(req.cookies.cart);
         Catalogs.find({})
             .then(catalogs => {
                 let cataloglist = multipleMongooseToObject(catalogs);
@@ -123,6 +131,7 @@ class SiteController {
                                     cataloglist,
                                     product,
                                     catalog,
+                                    cart: cart.count
                                 },
                                 WebUser: req.cookies.WebUser,
                             });
@@ -136,11 +145,13 @@ class SiteController {
 
     // [post] /signup
     signup(req, res, next) {
-        if (typeof req.cookies.cart !== 'undefined') {
-            res.cookie('cart', {
-                count: 0
-            });
-        };
+        if (typeof req.cookies.cart == 'undefined') {
+            res.cookie("cart", JSON.stringify({
+                count: 0,
+                products: [],
+            }));
+          }
+        var cart = JSON.parse(req.cookies.cart);
         //Save object to Database
         const formData = req.body;
         formData.password = md5.MD5(formData.password);
@@ -163,11 +174,13 @@ class SiteController {
 
     // [post] /check
     check(req, res, next) {
-        if (typeof req.cookies.cart !== 'undefined') {
-            res.cookie('cart', {
-                count: 0
-            });
-        };
+        if (typeof req.cookies.cart == 'undefined') {
+            res.cookie("cart", JSON.stringify({
+                count: 0,
+                products: [],
+            }));
+          }
+        var cart = JSON.parse(req.cookies.cart);
         const inputuser = req.body.user;
         const inputpassword = md5.MD5(req.body.password);
 
@@ -206,11 +219,13 @@ class SiteController {
 
     //[get] /search/
     search(req, res, next) {
-        if (typeof req.cookies.cart !== 'undefined') {
-            res.cookie('cart', {
-                count: 0
-            });
-        };
+        if (typeof req.cookies.cart == 'undefined') {
+            res.cookie("cart", JSON.stringify({
+                count: 0,
+                products: [],
+            }));
+          }
+        var cart = JSON.parse(req.cookies.cart);
         Catalogs.find({})
             .then(catalogs => {
                 let cataloglist = multipleMongooseToObject(catalogs);
@@ -222,11 +237,33 @@ class SiteController {
                             Object: {
                                 cataloglist,
                                 products: multipleMongooseToObject(products),
-                                cart: req.cookies.cart.count
+                                cart: cart.count
                             }
                         });
                     })
                     .catch(next);
+            })
+            .catch(next);
+    }
+
+    // [post] /product/:slug
+    addtocart(req, res, next) {
+        if (typeof req.cookies.cart == 'undefined') {
+            res.cookie("cart", JSON.stringify({
+                count: 0,
+                products: [],
+            }));
+          }
+        var cart = JSON.parse(req.cookies.cart);
+        Product.findOne({
+            slug: req.params.slug
+        })
+            .then(product => {
+                cart.products.push(moongoseToObject(product));
+                cart.count = cart.count + 1;
+                cart = JSON.stringify(cart);
+                req.cookies.cart = cart;
+                res.redirect('/');
             })
             .catch(next);
     }

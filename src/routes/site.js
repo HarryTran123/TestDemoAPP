@@ -15,6 +15,8 @@ router.get('/search/', siteController.search);
 //site [post]
 router.post('/check', siteController.check);
 router.post('/signup', siteController.signup);
+router.post('/product/:slug', siteController.addtocart);
+
 
 
 router.get('/', siteController.home);
