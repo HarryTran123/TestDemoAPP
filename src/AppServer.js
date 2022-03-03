@@ -38,7 +38,7 @@ app.use(session({
     resave: true, 
     saveUninitialized: true, 
     secret: 'testNodeApp', 
-    cookie: { maxAge: 60000 }}));
+}));
 
 //Usign cookies
 

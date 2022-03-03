@@ -9,6 +9,8 @@ router.get('/products/:catalog_name', siteController.catalog);
 router.get('/product/:slug', siteController.product);
 router.get('/logout', siteController.logout);
 router.get('/search/', siteController.search);
+router.get('/cart', siteController.cart);
+router.get('/cart/deletecart', siteController.deletecart);
 
 
 
