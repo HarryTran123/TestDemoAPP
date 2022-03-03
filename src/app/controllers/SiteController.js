@@ -225,7 +225,9 @@ class SiteController {
                         
                     res.redirect(req.get('referer'));
                 })
-                .catch(next);
+                .catch(() => {
+                    res.send("Sorry Your Username or Password may be incorrect");
+                });
         }
         
     }
