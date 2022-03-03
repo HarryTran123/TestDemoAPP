@@ -18,6 +18,7 @@ router.get('/cart/deletecart', siteController.deletecart);
 router.post('/check', siteController.check);
 router.post('/signup', siteController.signup);
 router.post('/product/:slug', siteController.addtocart);
+router.post('/cart/newTransaciton', siteController.transaction);
 
 
 

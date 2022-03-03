@@ -1,6 +1,8 @@
 const Product = require('../models/Product');
 const Catalogs = require('../models/Catalog');
 const User_accounts = require('../models/User_account');
+const Transaction = require('../models/Transaction');
+
 
 const { multipleMongooseToObject, moongoseToObject } = require("../../utility/mongoose");
 const md5 = require('../../utility/md5');
@@ -233,7 +235,6 @@ class SiteController {
         res.clearCookie("WebUser");
         res.clearCookie("WebUserEmail");
         res.clearCookie("WebUserPassword");
-        res.redirect(req.get('referer'));
         req.session.destroy();
         res.redirect(req.get('referer'));
 
@@ -367,6 +368,29 @@ class SiteController {
             })
             .catch(next);
         }
+    }
+
+    transaction(req, res, next) {
+        User_accounts.findOne({
+            name: req.cookies.WebUser
+        })
+            .then(user => {
+                user = moongoseToObject(user);
+                let formData = req.body;
+                delete formData.check_out;
+                formData.user_id = user._id;
+                formData.total = req.session.cart.total;
+                formData.Products = req.session.cart.products;
+
+                const transaction = new Transaction(formData);
+
+                transaction.save()
+                    .then(() => {
+                        req.session.destroy();
+                        res.redirect(req.get('referer'));
+                    })
+                    .catch(next);
+            })
     }
 }
 
