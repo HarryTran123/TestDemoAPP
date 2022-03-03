@@ -51,6 +51,7 @@ class SiteController {
                                                 cartnum: cart.count,
                                             },
                                             WebUser: req.cookies.WebUser,
+                                            Error: req.cookies.Error,
                                         });  
                                     })
                                     .catch(next);
@@ -103,6 +104,8 @@ class SiteController {
                                     cartnum: cart.count,
                                 },
                                 WebUser: req.cookies.WebUser,
+                                Error: req.cookies.Error,
+
                             });
                         })
                         .catch(next);
@@ -149,6 +152,8 @@ class SiteController {
                                     cartnum: cart.count,
                                 },
                                 WebUser: req.cookies.WebUser,
+                                Error: req.cookies.Error,
+
                             });
                         })
                         .catch(next);
@@ -221,12 +226,14 @@ class SiteController {
                     res.cookie('WebUser', outuser.name);
                     res.cookie('WebUserEmail', outuser.email);
                     res.cookie('WebUserPassword', outuser.password);
+                    res.clearCookie("Error");
 
                         
                     res.redirect(req.get('referer'));
                 })
-                .catch(() => {
-                    res.send("Sorry Your Username or Password may be incorrect");
+                .catch(error => {
+                    res.cookie('Error', 'Error');
+                    res.redirect(req.get('referer'));
                 });
         }
         
@@ -268,6 +275,8 @@ class SiteController {
                                 cartnum: cart.count,
                             },
                             WebUser: req.cookies.WebUser,
+                            Error: req.cookies.Error,
+
                         });
                     })
                     .catch(next);
@@ -364,6 +373,8 @@ class SiteController {
                                 user: moongoseToObject(user),
                             },
                             WebUser: req.cookies.WebUser,
+                            Error: req.cookies.Error,
+
                         });
                     })  
                     .catch(next);
