@@ -378,7 +378,7 @@ class SiteController {
                 user = moongoseToObject(user);
                 let formData = req.body;
                 delete formData.check_out;
-                formData.user_id = user._id;
+                formData.user = user;
                 formData.total = req.session.cart.total;
                 formData.Products = req.session.cart.products;
 

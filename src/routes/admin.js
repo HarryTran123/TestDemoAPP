@@ -6,6 +6,8 @@ const user_account = require('../app/controllers/User_Account');
 const adminLoginPanel = require('../app/controllers/AdminLoginPanel');
 const catalog = require('../app/controllers/Catalog_Admin');
 const product = require('../app/controllers/Product_Admin');
+const transaction = require('../app/controllers/Admin_Transaction');
+
 
 
 
@@ -43,6 +45,10 @@ router.get('/products/:id/edit', product.edit);
 //product [post]
 router.post('/products/save', product.save);
 router.post('/products/:id/update', product.update)
+
+//transaction [get]
+router.get('/transaction', transaction.show)
+
 
 //Loginpanel [get]
 router.get('/', adminLoginPanel.login);
