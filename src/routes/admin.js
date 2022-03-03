@@ -51,6 +51,10 @@ router.get('/transaction', transaction.show);
 router.get('/orders', transaction.showorders);
 router.get('/orders/:trans_id', transaction.specifictransorders);
 router.get('/orders/:trans_id/:product_id/updateStatus', transaction.updateStatus);
+router.get('/waitingOrders', transaction.waiting);
+router.get('/OnGoing', transaction.ongoing);
+router.get('/Finished', transaction.finished);
+
 
 
 

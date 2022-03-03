@@ -101,6 +101,89 @@ class Admin_Transaction {
             })
     }
 
+    waiting(req, res, next) {
+        Transaction.find({})
+            .then(transactions => {
+                transactions =  multipleMongooseToObject(transactions);
+
+                transactions.forEach(function(part, index) {
+                    for(let i=0; i<transactions[index].Products.length; i++) {
+                        if(transactions[index].Products[i].status == 0) {
+                            transactions[index].Products[i].statusString = 'Waiting';
+                            transactions[index].Products[i].trans_id = transactions[index]._id;
+                        } else if(transactions[index].Products[i].status == 1){
+                            transactions[index].Products.splice(i, 1);
+                        } else if(transactions[index].Products[i].status == 2){
+                            transactions[index].Products.splice(i, 1);
+                        }
+
+                    }
+                  });
+
+                res.render('transaction/waiting', {
+                    layout: 'admin',
+                    username: req.cookies.username,
+                    title: 'Waiting Orders',
+                    transactions,
+                })
+            })
+    }
+
+    ongoing(req, res, next) {
+        Transaction.find({})
+            .then(transactions => {
+                transactions =  multipleMongooseToObject(transactions);
+
+                transactions.forEach(function(part, index) {
+                    for(let i=0; i<transactions[index].Products.length; i++) {
+                        if(transactions[index].Products[i].status == 0) {
+                            transactions[index].Products.splice(i, 1);
+                        } else if(transactions[index].Products[i].status == 1){
+                            transactions[index].Products[i].statusString = 'On Going';
+                            transactions[index].Products[i].trans_id = transactions[index]._id;
+                        } else if(transactions[index].Products[i].status == 2){
+                            transactions[index].Products.splice(i, 1);
+                        }
+
+                    }
+                  });
+
+                res.render('transaction/ongoing', {
+                    layout: 'admin',
+                    username: req.cookies.username,
+                    title: 'On Going Orders',
+                    transactions,
+                })
+            })
+    }
+
+    finished(req, res, next) {
+        Transaction.find({})
+            .then(transactions => {
+                transactions =  multipleMongooseToObject(transactions);
+
+                transactions.forEach(function(part, index) {
+                    for(let i=0; i<transactions[index].Products.length; i++) {
+                        if(transactions[index].Products[i].status == 0) {
+                            transactions[index].Products.splice(i, 1);
+                        } else if(transactions[index].Products[i].status == 1){
+                            transactions[index].Products.splice(i, 1);
+                        } else if(transactions[index].Products[i].status == 2){
+                            transactions[index].Products[i].statusString = 'Finished';
+                            transactions[index].Products[i].trans_id = transactions[index]._id;
+                        }
+
+                    }
+                  });
+
+                res.render('transaction/finished', {
+                    layout: 'admin',
+                    username: req.cookies.username,
+                    title: 'Finished Orders',
+                    transactions,
+                })
+            })
+    }
 }
 
 module.exports = new Admin_Transaction;
