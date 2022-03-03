@@ -140,6 +140,39 @@ class Product_Admin {
             .catch(next);
     }
 
+    searchforProducts(req, res, next) {
+        Catalogs.find({})
+            .then(Catalogs => {
+                Catalogs = multipleMongooseToObject(Catalogs);
+                Admin_products.find({
+                    productname: {$regex: req.body.search, $options: 'i'}
+                })
+                    .then(products => {
+                        products = multipleMongooseToObject(products)
+
+
+                        Catalogs.forEach(function(part, indexer) {
+
+                            products.forEach(function(part, index) {
+                               
+                                if(Catalogs[indexer]._id == products[index].catalogid) {
+                                    products[index].catalogid = Catalogs[indexer].name;
+                                }
+                            });
+                        });
+                        
+                        res.render('product/product', {
+                            layout: 'admin',
+                            title: 'Products',
+                            username: req.cookies.username,
+                            products
+                        })
+                    })
+                    .catch(next);
+            })
+            .catch(next);
+    }
+
 }
 
 module.exports = new Product_Admin;

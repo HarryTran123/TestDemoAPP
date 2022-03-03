@@ -46,6 +46,7 @@ router.get('/products/:id/delete', product.delete);
 router.get('/products/:id/edit', product.edit);
 
 //product [post]
+router.post('/products', product.searchforProducts);
 router.post('/products/save', product.save);
 router.post('/products/:id/update', product.update);
 
@@ -57,6 +58,9 @@ router.get('/orders/:trans_id/:product_id/updateStatus', transaction.updateStatu
 router.get('/waitingOrders', transaction.waiting);
 router.get('/OnGoing', transaction.ongoing);
 router.get('/Finished', transaction.finished);
+
+//transaction [post]
+router.post('/transaction', transaction.searchforTrans);
 
 
 

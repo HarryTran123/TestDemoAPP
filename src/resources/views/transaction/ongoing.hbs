@@ -2,22 +2,13 @@
         <div style="text-align: center; margin-bottom:20px; margin-top:20px">
             <h1>On Going Orders</h1>
         </div>
-        <div class="row" style="margin-bottom: 20px;">
-            <div class="col-lg-6 ml-auto">
-                <form method="get">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search" id="search" name="search"
-                            style="width: 500px; float:right; margin-top: 10px">
-                    </div>
-                </form>
-            </div>
-        </div>
+        <br>
+    <br>
 
         <!-- Transaction table -->
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>Index</th>
                 <th>User Name</th>
                 <th>Payment Info</th>
                 <th>Product Name</th>
@@ -31,7 +22,6 @@
             {{#each transactions}}
             {{#each this.Products}}
             <tr>
-                    <td>{{sum @index 1}}</td>
                     <td>{{this.username}}</td>
                     <td>{{this.payment_info}}</td>
                     <td>{{this.productname}}</td>
@@ -45,8 +35,5 @@
         </tbody>
         </table>
         <!-- End of Transaction Table -->
-        <ul class="pagination" style="justify-content: center;">
-
-            <li class="page-item active"><a class="page-link" href="?page=1">1</a></li>
-        </ul>
+        
     </main>

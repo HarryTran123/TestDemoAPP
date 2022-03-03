@@ -184,6 +184,31 @@ class Admin_Transaction {
                 })
             })
     }
+
+    searchforTrans(req, res, next) {
+        Transaction.find({
+            $or: [
+                {
+                    "user.username": {$regex: req.body.search, $options: 'i'} 
+                },
+                {
+                    "user.email": {$regex: req.body.search, $options: 'i'} 
+                },
+                {
+                    "user.phone": {$regex: req.body.search, $options: 'i'} 
+                },
+            ]
+        })
+            .then(transactions => {
+                res.render('transaction/transaction', {
+                    layout: 'admin', 
+                    username: req.cookies.username,
+                    title: 'Transactions',
+                    transactions: multipleMongooseToObject(transactions)
+                })
+            })
+    }
+
 }
 
 module.exports = new Admin_Transaction;

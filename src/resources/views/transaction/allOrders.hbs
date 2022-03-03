@@ -2,16 +2,9 @@
     <div style="text-align: center; margin-bottom:20px; margin-top:20px">
         <h1>All Orders</h1>
     </div>
-    <div class="row" style="margin-bottom: 20px;">
-        <div class="col-lg-6 ml-auto">
-            <form method="get">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search" id="search" name="search"
-                        style="width: 500px; float:right; margin-top: 10px">
-                </div>
-            </form>
-        </div>
-    </div>
+    
+    <br>
+    <br>
 
     <!-- Transaction table -->
     <table class="table table-hover">
@@ -51,9 +44,10 @@
             {{else}}
             {{#if transactions}}
             {{#each transactions}}
-            {{#each this.Products}}
             <tr>
                 <td>{{sum @index 1}}</td>
+                {{#each this.Products}}
+
                 <td>{{{this.username}}}</td>
                 <td>{{{this.payment_info}}}</td>
                 <td>{{this.productname}}</td>
@@ -67,8 +61,9 @@
                         onclick="return confirm_alert(this);">Accept Order</a></td>
                 {{/if}}
                 </td>
+                {{/each}}
             </tr>
-            {{/each}}
+
             {{/each}}
             {{/if}}
             {{/if}}
@@ -76,8 +71,8 @@
         </tbody>
     </table>
     <!-- End of Transaction Table -->
-    <ul class="pagination" style="justify-content: center;">
+    {{!-- <ul class="pagination" style="justify-content: center;">
 
         <li class="page-item active"><a class="page-link" href="?page=1">1</a></li>
-    </ul>
+    </ul> --}}
 </main>
