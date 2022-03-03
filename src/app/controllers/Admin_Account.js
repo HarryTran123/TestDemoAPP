@@ -135,6 +135,32 @@ class Admin_Account {
       res.status(400).send('Bad Request:' + errorMsg);
     });
   }
+
+  searchforAdminACC(req, res, next) {
+    Admin_accounts.find({
+        username: {$regex: req.body.search, $options: 'i'}
+    })
+      .then(Admin_accounts => {
+        Admin_accounts = multipleMongooseToObject (Admin_accounts);
+        //Modify status to print 
+        Admin_accounts.forEach(function(part, index) {
+          if(Admin_accounts[index].status == 0){
+            Admin_accounts[index].status = "Active";
+          }else{
+            Admin_accounts[index].status = "Disable";
+          }
+        });
+        //Render
+        res.render('accounts/admin_account', {
+          layout: 'admin',
+          title: 'Admin accounts',
+          Admin_accounts,
+          username: req.cookies.username
+        })
+      })
+      .catch(next); 
+  }
+
 }
 
 module.exports = new Admin_Account();

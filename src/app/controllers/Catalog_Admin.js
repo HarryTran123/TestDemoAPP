@@ -113,6 +113,21 @@ class Catalog {
       res.status(400).send('Bad Request:' + errorMsg);
     });
   }
+
+  searchforCatalog(req, res, next) {
+    Catalogs.find({
+      name: {$regex: req.body.search, $options: 'i'}
+    })
+      .then(Catalogs => {
+        res.render('product/catalog/catalog', {
+          layout: 'admin',
+          title: 'Catalog',
+          username: req.cookies.username,
+          Catalogs: multipleMongooseToObject(Catalogs)
+        })
+      })
+      .catch(next);
+  }
 }
 
 module.exports = new Catalog();

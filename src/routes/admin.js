@@ -21,6 +21,8 @@ router.get('/accounts/user-Accounts', user_account.user);
 router.get('/account/change-password', adminLoginPanel.changpassword)
 
 //admin accounts [post]
+router.post('/accounts/admin-Accounts', admin_account.searchforAdminACC);
+router.post('/accounts/user-Accounts', user_account.searchforUserACC);
 router.post('/accounts/save', admin_account.save);
 router.post('/check', adminLoginPanel.check);
 router.post('/accounts/:id/update', admin_account.update);
@@ -33,6 +35,7 @@ router.get('/catalogs/:id/delete', catalog.delete);
 router.get('/catalogs/:id/edit', catalog.edit)
 
 //catalog [post]
+router.post('/catalogs', catalog.searchforCatalog);
 router.post('/catalogs/save', catalog.save);
 router.post('/catalogs/:id/update', catalog.update);
 

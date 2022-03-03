@@ -21,6 +21,22 @@ class User_Account {
     })
     .catch(next);
   }
+
+  searchforUserACC(req, res, next) {
+    User_accounts.find({
+      $or: [{username: {$regex: req.body.search, $options: 'i'}}, {name: {$regex: req.body.search, $options: 'i'}}],
+  })
+    .then(User_accounts => {
+      //Modify status to print 
+      res.render('accounts/user_account', {
+        layout: 'admin',
+        title: 'User accounts',
+        User_accounts: multipleMongooseToObject(User_accounts),
+        username: req.cookies.username
+      });
+    })
+    .catch(next); 
+  }
   
 }
 
