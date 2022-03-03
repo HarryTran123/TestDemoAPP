@@ -382,6 +382,13 @@ class SiteController {
                 formData.total = req.session.cart.total;
                 formData.Products = req.session.cart.products;
 
+                for(let i = 0; i<formData.Products.length; i++) {
+                    formData.Products[i].status = 0;
+                    formData.Products[i].username = user.name;
+                    formData.Products[i].payment_info = req.body.payment_info;
+                }
+
+
                 const transaction = new Transaction(formData);
 
                 transaction.save()

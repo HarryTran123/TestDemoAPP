@@ -28,7 +28,7 @@
         <tbody>
             {{#each transactions}}
             <tr>
-                <td><a href="/admin/orders/:{{this._id}}">{{sum @index 1}}</a></td>
+                <td><a href="/admin/orders/{{this._id}}">{{sum @index 1}}</a></td>
                 <td>{{this.user.name}}</td>
                 <td>{{this.user.email}}</td>
                 <td>{{this.user.phone}}</td>

@@ -4,6 +4,7 @@ const User_accounts = require('../models/User_account');
 
 const md5 = require('../../utility/md5');
 const cookieParser = require('cookie-parser');
+const { transaction } = require('./SiteController');
 
 
 class Admin_Transaction {
@@ -16,6 +17,86 @@ class Admin_Transaction {
                     username: req.cookies.username,
                     title: 'Transactions',
                     transactions: multipleMongooseToObject(transactions)
+                })
+            })
+    }
+
+    specifictransorders(req, res, next) {
+        Transaction.findOne({
+            _id: req.params.trans_id,
+        })
+            .then(transaction => {
+                transaction =  moongoseToObject(transaction);
+
+                for(let i=0; i<transaction.Products.length; i++) {
+                    if(transaction.Products[i].status == 0){
+                        transaction.Products[i].statusString = 'Waiting';
+
+                    } else if(transaction.Products[i].status == 1){
+                        transaction.Products[i].statusString = 'On going';
+                    } else if(transaction.Products[i].status == 2){
+                        transaction.Products[i].statusString = 'Finished';
+                        transaction.Products[i].AcceptOrder = true;
+                    }
+                    transaction.Products[i].trans_id = transaction._id
+                }
+
+                res.render('transaction/allOrders', {
+                    layout: 'admin',
+                    username: req.cookies.username,
+                    title: 'All Orders',
+                    transaction,
+                })
+            })
+    }
+
+    updateStatus(req, res, next) {
+        Transaction.findByIdAndUpdate(req.params.trans_id)
+            .then(transaction => {
+                transaction = moongoseToObject(transaction);
+                for(let i=0; i<transaction.Products.length; i++) {
+                    if(transaction.Products[i]._id == req.params.product_id) {
+                        transaction.Products[i].status  =  transaction.Products[i].status + 1 ;
+                        break;
+                    }
+                }
+
+                Transaction.findByIdAndUpdate(req.params.trans_id, transaction)
+                    .then(() => {
+                        res.redirect(req.get('referer'));
+                    })
+                    .catch(next);
+                
+            })
+            .catch(next);
+    }
+
+    showorders(req, res, next) {
+        Transaction.find({})
+            .then(transactions => {
+                transactions =  multipleMongooseToObject(transactions);
+
+                transactions.forEach(function(part, index) {
+                    for(let i=0; i<transactions[index].Products.length; i++) {
+                        if(transactions[index].Products[i].status == 0){
+                            transactions[index].Products[i].statusString = 'Waiting';
+    
+                        } else if(transactions[index].Products[i].status == 1){
+                            transactions[index].Products[i].statusString = 'On going';
+                        } else if(transactions[index].Products[i].status == 2){
+                            transactions[index].Products[i].statusString = 'Finished';
+                            transactions[index].Products[i].AcceptOrder = true;
+                        }
+                        transactions[index].Products[i].trans_id = transactions[index]._id
+                    }
+
+                  });
+
+                res.render('transaction/allOrders', {
+                    layout: 'admin',
+                    username: req.cookies.username,
+                    title: 'All Orders',
+                    transactions,
                 })
             })
     }

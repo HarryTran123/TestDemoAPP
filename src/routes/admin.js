@@ -44,10 +44,14 @@ router.get('/products/:id/edit', product.edit);
 
 //product [post]
 router.post('/products/save', product.save);
-router.post('/products/:id/update', product.update)
+router.post('/products/:id/update', product.update);
 
 //transaction [get]
-router.get('/transaction', transaction.show)
+router.get('/transaction', transaction.show);
+router.get('/orders', transaction.showorders);
+router.get('/orders/:trans_id', transaction.specifictransorders);
+router.get('/orders/:trans_id/:product_id/updateStatus', transaction.updateStatus);
+
 
 
 //Loginpanel [get]
