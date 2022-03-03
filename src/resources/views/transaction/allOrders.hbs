@@ -2,7 +2,7 @@
     <div style="text-align: center; margin-bottom:20px; margin-top:20px">
         <h1>All Orders</h1>
     </div>
-    
+
     <br>
     <br>
 
@@ -10,7 +10,7 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Index</th>
+                <th>Transaction ID</th>
                 <th>User Name</th>
                 <th>Payment Info</th>
                 <th>Product Name</th>
@@ -25,7 +25,7 @@
             {{#if transaction}}
             {{#each transaction.Products}}
             <tr>
-                <td>{{sum @index 1}}</td>
+                <td>{{this.trans_id}}</td>
                 <td>{{{this.username}}}</td>
                 <td>{{{this.payment_info}}}</td>
                 <td>{{this.productname}}</td>
@@ -38,16 +38,15 @@
                 <td><a href="/admin/orders/{{this.trans_id}}/{{this._id}}/updateStatus"
                         onclick="return confirm_alert(this);">Accept Order</a></td>
                 {{/if}}
-                </td>
             </tr>
             {{/each}}
             {{else}}
             {{#if transactions}}
             {{#each transactions}}
-            <tr>
-                <td>{{sum @index 1}}</td>
-                {{#each this.Products}}
 
+            {{#each this.Products}}
+            <tr>
+                <td>{{this.trans_id}}</td>
                 <td>{{{this.username}}}</td>
                 <td>{{{this.payment_info}}}</td>
                 <td>{{this.productname}}</td>
@@ -60,9 +59,9 @@
                 <td><a href="/admin/orders/{{this.trans_id}}/{{this._id}}/updateStatus"
                         onclick="return confirm_alert(this);">Accept Order</a></td>
                 {{/if}}
-                </td>
-                {{/each}}
+
             </tr>
+            {{/each}}
 
             {{/each}}
             {{/if}}

@@ -24,7 +24,7 @@ class User_Account {
 
   searchforUserACC(req, res, next) {
     User_accounts.find({
-      $or: [{username: {$regex: req.body.search, $options: 'i'}}, {name: {$regex: req.body.search, $options: 'i'}}],
+      $or: [{username: {$regex: req.body.search, $options: 'i'}}, {name: {$regex: req.body.search, $options: 'i'}}, {email: {$regex: req.body.search, $options: 'i'}}],
   })
     .then(User_accounts => {
       //Modify status to print 
