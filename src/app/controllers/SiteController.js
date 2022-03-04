@@ -158,19 +158,30 @@ class SiteController {
                             _id: product.catalogid,
                         })
                         .then(catalog => {
-                            catalog = moongoseToObject(catalog);
-                            res.render('productdetail', {
-                                title: product.productname,
-                                Object: {
-                                    cataloglist,
-                                    product,
-                                    catalog,
-                                    cartnum: cart.count,
-                                },
-                                WebUser: req.cookies.WebUser,
-                                Error: req.cookies.Error,
-
-                            });
+                            let NEWVIEW = product.view + 1;
+                            Product.updateOne({
+                                slug: req.params.slug,
+                            },
+                            {
+                                view: NEWVIEW
+                            }) 
+                            .then(() => {
+                                catalog = moongoseToObject(catalog);
+                                res.render('productdetail', {
+                                    title: product.productname,
+                                    Object: {
+                                        cataloglist,
+                                        product,
+                                        catalog,
+                                        cartnum: cart.count,
+                                    },
+                                    WebUser: req.cookies.WebUser,
+                                    Error: req.cookies.Error,
+    
+                                });
+                            })
+                            .catch(next);                    
+                            
                         })
                         .catch(next);
                     })
