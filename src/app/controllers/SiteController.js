@@ -91,24 +91,40 @@ class SiteController {
                 })
                     .then(catalog => {
                         catalog = moongoseToObject(catalog);
-                        Product.find({
+                        const limit = 4;
+                        const StartIndex = (parseInt(req.query.page) - 1) * limit;
+                        Product.countDocuments({
                             catalogid: catalog._id
-                        })
-                        .then(products => {
-                            res.render('products', {
-                                title: catalog.name,
-                                Object: {
-                                    cataloglist,
-                                    products: multipleMongooseToObject(products),
-                                    catalog,
-                                    cartnum: cart.count,
-                                },
-                                WebUser: req.cookies.WebUser,
-                                Error: req.cookies.Error,
+                        }, function(err, docCount) {
+                            if (err) { return handleError(err) } //handle possible errors
+                            const TotalPages = Math.ceil(docCount/limit);
+                            Product.find({
+                                catalogid: catalog._id
+                            }).limit(limit).skip(StartIndex)
+                            .then(products => {
+                                res.render('products', {
+                                    title: catalog.name,
+                                    Object: {
+                                        cataloglist,
+                                        products: multipleMongooseToObject(products),
+                                        catalog,
+                                        cartnum: cart.count,
+                                    },
+                                    WebUser: req.cookies.WebUser,
+                                    Error: req.cookies.Error,
+                                    EnablePaging: docCount > limit,
 
-                            });
+                                    pagination: {
+                                        page: parseInt(req.query.page),
+                                        pageCount: TotalPages
+                                    }
+                                      
+
+                                });
+                            })
+                            .catch(next);
                         })
-                        .catch(next);
+                        
                     })
                     .catch(next);
             })

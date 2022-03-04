@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session')
 
 
+
+
 const path = require('path');
 
 
@@ -53,9 +55,11 @@ app.use(cookieParser());
 app.engine('hbs', handlebars.engine({
     extname: '.hbs',
     helpers: {
-        sum: (a, b) => a+b
+        sum: (a, b) => a+b,
+        'paginate': require('handlebars-paginate')
     }
 }));
+
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources', 'views'));
 
