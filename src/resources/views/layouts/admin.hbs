@@ -6,8 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
-    <link rel="shortcut icon" href="../../../public/img/Diversity-Avatars-Avatars-Robot-02.ico"/>
-
+    <link rel="apple-touch-icon" sizes="180x180" href="/src/public/img/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/src/public/img/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/src/public/img/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/src/public/img/favicon_io/site.webmanifest">
     <!--
         Installing Boostrap 4
     -->
@@ -34,17 +36,16 @@
             return confirm("Do you want to delete this?");
         }
 
-        
-        function CheckListAcc()
-        {
-                var list = {{account.status}};
-                console.log(list);
-                if(list == 0)
-                {
-                    document.getElementById('status').selectedIndex = "1";
-                } else if(list == 1){
-                    document.getElementById('status').selectedIndex = "2";
-                }           
+
+        function CheckListAcc() {
+            var list = {{ account.status }
+        };
+        console.log(list);
+        if (list == 0) {
+            document.getElementById('status').selectedIndex = "1";
+        } else if (list == 1) {
+            document.getElementById('status').selectedIndex = "2";
+        }           
         }
 
     </script>
@@ -56,18 +57,19 @@
     </script>
 
     <style>
-    html, body {
-        min-height: 100%;
-    }
+        html,
+        body {
+            min-height: 100%;
+        }
 
-    #products {
-        table-layout: fixed;
-        width: 100%;
-    }
+        #products {
+            table-layout: fixed;
+            width: 100%;
+        }
 
-    table {
-        width: 100%;
-    }
+        table {
+            width: 100%;
+        }
     </style>
 </head>
 
@@ -78,8 +80,7 @@
             <nav>
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown"
-                            href="#">Account Management</a>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Account Management</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="/admin/accounts/admin-Accounts">Admin accounts</a>
                             <a class="dropdown-item" href="/admin/accounts/user-Accounts">User accounts</a>
